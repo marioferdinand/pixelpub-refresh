@@ -8,30 +8,30 @@ import screenshotBookflow from "@/assets/screenshot-bookflow.png";
 const projects = [
   {
     image: screenshotPixelmedia,
-    tag: "Agence",
+    tag: "Web",
     title: "PixelMedia",
-    desc: "Agence digitale spécialisée dans la création de sites web modernes, automatisation IA et solutions marketing pour entrepreneurs africains.",
+    desc: "Site web moderne pour une agence digitale avec design responsive, animations fluides et expérience utilisateur optimisée.",
     url: "https://pixelpub.online/",
   },
   {
     image: screenshotTicketafrik,
-    tag: "EventTech",
+    tag: "Plateforme",
     title: "TicketAfrik",
-    desc: "Plateforme de billetterie digitale avec QR Code permettant aux organisateurs d'événements de vendre et scanner des tickets facilement.",
+    desc: "Plateforme de billetterie digitale avec interface intuitive, gestion d'événements et système de QR Code intégré.",
     url: "https://tickeafrik.pixelpub.online/",
   },
   {
     image: screenshotBoosterperso,
     tag: "Growth",
     title: "Booster Perso",
-    desc: "Plateforme de croissance réseaux sociaux permettant d'augmenter abonnés, vues et engagement avec des stratégies optimisées.",
+    desc: "Plateforme de croissance réseaux sociaux avec dashboard utilisateur, stratégies d'engagement et suivi de performance.",
     url: "https://booster.perso.bf/",
   },
   {
     image: screenshotBookflow,
     tag: "SaaS",
     title: "BOOKflow",
-    desc: "Solution SaaS permettant de créer et vendre des e-books générés par IA avec système de monétisation intégré.",
+    desc: "Solution SaaS de création et vente d'e-books avec design éditorial soigné et système de monétisation intégré.",
     url: "https://bookflow.pixelpub.online/",
   },
 ];
@@ -46,7 +46,7 @@ const ProjectsSection = () => {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center mb-16"
         >
-          Projets & plateformes lancées
+          Projets & réalisations
         </motion.h2>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -78,7 +78,7 @@ const ProjectsSection = () => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline"
                 >
-                  Visiter la plateforme <ExternalLink size={14} />
+                  Visiter le projet <ExternalLink size={14} />
                 </a>
               </div>
             </motion.div>

@@ -1,26 +1,26 @@
 import { motion } from "framer-motion";
-import { ShoppingCart, Megaphone, Code, Cog } from "lucide-react";
+import { Code, Users, Palette, Cog } from "lucide-react";
 
 const expertises = [
   {
-    icon: ShoppingCart,
-    title: "E-commerce",
-    desc: "Création de boutiques en ligne optimisées pour la conversion, intégration paiements, tunnels de vente et automatisations.",
-  },
-  {
-    icon: Megaphone,
-    title: "Publicité Facebook & TikTok",
-    desc: "Création et gestion de campagnes performantes : acquisition client, CPA optimisé, scaling publicitaire, tests créatives.",
-  },
-  {
     icon: Code,
-    title: "VibeCoding & Création SaaS",
-    desc: "Création rapide de plateformes modernes via outils nouvelle génération, automatisation IA, intégration API.",
+    title: "Développement Web & Mobile",
+    desc: "Création de sites web modernes, applications mobiles et plateformes sur mesure avec les technologies les plus récentes.",
+  },
+  {
+    icon: Users,
+    title: "Community Management",
+    desc: "Gestion de communautés, stratégie de contenu, animation des réseaux sociaux et croissance d'audience organique.",
+  },
+  {
+    icon: Palette,
+    title: "Design UI/UX & Graphique",
+    desc: "Création d'identités visuelles, maquettes UI/UX, logos, supports marketing et designs impactants pour votre marque.",
   },
   {
     icon: Cog,
-    title: "Automatisation Business",
-    desc: "Systèmes WhatsApp automatisés, tunnel de vente, paiement mobile, CRM & suivi client.",
+    title: "Stratégie Digitale",
+    desc: "Accompagnement stratégique complet : branding, positionnement, plan de contenu et optimisation de présence en ligne.",
   },
 ];
 
@@ -35,7 +35,7 @@ const ExpertiseSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Mon expertise</h2>
-          <p className="text-muted-foreground">4+ projets lancés</p>
+          <p className="text-muted-foreground">Des compétences complètes pour votre présence digitale</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
