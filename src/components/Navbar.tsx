@@ -7,6 +7,7 @@ const navLinks = [
   { label: "Expertise", href: "#expertise" },
   { label: "Projets", href: "#projects" },
   { label: "Résultats", href: "#resultats" },
+  { label: "Store", href: "/store", external: true },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -39,13 +40,17 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.label}
             </a>
           ))}
           <a
-            href="#contact"
+            href="https://wa.me/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-primary text-primary-foreground px-5 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
           >
             Me contacter
@@ -73,6 +78,8 @@ const Navbar = () => {
                 <a
                   key={link.href}
                   href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
                   onClick={() => setMobileOpen(false)}
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
@@ -80,7 +87,9 @@ const Navbar = () => {
                 </a>
               ))}
               <a
-                href="#contact"
+                href="https://wa.me/"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
                 className="bg-primary text-primary-foreground px-5 py-2 rounded-lg text-sm font-medium text-center"
               >
