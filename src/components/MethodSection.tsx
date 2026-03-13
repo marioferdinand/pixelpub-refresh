@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 
 const steps = [
-  { num: "01", title: "Analyse & stratégie", desc: "Comprendre le business, le marché et définir la stratégie d'acquisition et monétisation." },
-  { num: "02", title: "Création plateforme / tunnel", desc: "Construction de la plateforme e-commerce, SaaS ou tunnel de vente optimisé pour la conversion." },
-  { num: "03", title: "Lancement publicitaire", desc: "Déploiement des campagnes Facebook & TikTok Ads avec ciblage précis et créatives testées." },
-  { num: "04", title: "Optimisation & scaling", desc: "Analyse des performances, réduction du CPA et scaling pour maximiser le ROI." },
+  { num: "01", title: "Écoute & analyse", desc: "Comprendre vos besoins, votre marque et définir la stratégie digitale adaptée à vos objectifs." },
+  { num: "02", title: "Design & développement", desc: "Création des maquettes, développement du site ou de l'application avec un design sur mesure." },
+  { num: "03", title: "Contenu & communauté", desc: "Mise en place de la stratégie de contenu et lancement de la gestion de communauté sur vos réseaux." },
+  { num: "04", title: "Optimisation & croissance", desc: "Suivi des performances, ajustements et stratégies de croissance pour maximiser votre impact digital." },
 ];
 
 const MethodSection = () => {

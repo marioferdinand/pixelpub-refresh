@@ -8,24 +8,24 @@ import {
 
 const faqs = [
   {
-    q: "Quels types de boutiques e-commerce créez-vous ?",
-    a: "Je crée des boutiques en ligne optimisées pour la conversion, avec intégration de paiements mobiles et systèmes d'automatisation adaptés au marché africain.",
+    q: "Quels types de sites web développez-vous ?",
+    a: "Je développe des sites vitrines, portfolios, e-commerce, applications web et plateformes SaaS avec des technologies modernes et un design soigné.",
   },
   {
-    q: "Comment fonctionnent vos campagnes Facebook & TikTok Ads ?",
-    a: "Je mets en place des campagnes ciblées avec tests créatifs, optimisation du CPA et scaling progressif pour maximiser votre retour sur investissement.",
+    q: "Comment gérez-vous le community management ?",
+    a: "Je définis une stratégie éditoriale, crée du contenu engageant, anime vos communautés et analyse les performances pour optimiser votre présence sur les réseaux sociaux.",
   },
   {
-    q: "Qu'est-ce que le VibeCoding ?",
-    a: "Le VibeCoding est une approche de développement rapide utilisant les outils IA de nouvelle génération pour créer des plateformes modernes en un temps record.",
+    q: "Quels services de design proposez-vous ?",
+    a: "Identité visuelle complète, logos, maquettes UI/UX, supports marketing print et digital, et direction artistique pour votre marque.",
   },
   {
     q: "Quels sont vos délais de livraison ?",
-    a: "Les délais varient selon la complexité du projet. Une boutique e-commerce peut être livrée en 1-2 semaines, un SaaS en 3-6 semaines.",
+    a: "Les délais varient selon la complexité. Un site vitrine : 1-2 semaines. Une identité visuelle : 1 semaine. Une stratégie social media : mise en place en 3-5 jours.",
   },
   {
     q: "Comment sont définis vos tarifs ?",
-    a: "Les tarifs sont personnalisés selon la portée du projet. Contactez-moi pour un devis gratuit adapté à vos besoins spécifiques.",
+    a: "Les tarifs sont personnalisés selon vos besoins. Contactez-moi pour un devis gratuit et détaillé adapté à votre projet.",
   },
 ];
 
