@@ -3,9 +3,10 @@ import { ArrowRight } from "lucide-react";
 import photoSedgo from "@/assets/photo-sedgo.jpg";
 
 const badges = [
-{ emoji: "💻", label: "Développeur" },
-{ emoji: "📱", label: "Community Manager" },
-{ emoji: "🎨", label: "Designer" }];
+  { emoji: "💻", label: "Développeur web" },
+  { emoji: "📱", label: "Community Manager" },
+  { emoji: "🎨", label: "Graphiste" }
+];
 
 
 const HeroSection = () => {
