@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Send, MapPin, Mail, Phone } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Send, MapPin, Mail, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import SubpageNav from "@/components/SubpageNav";
+import PageHero from "@/components/PageHero";
+import heroImg from "@/assets/hero-contact.jpg";
 
 const socials = [
   { label: "WhatsApp", href: "https://wa.me/", icon: "💬" },
@@ -12,7 +14,6 @@ const socials = [
 ];
 
 const Contact = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
@@ -33,39 +34,19 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft size={20} />
-            <span>Retour</span>
-          </button>
-          <a href="/" className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-display font-bold text-primary-foreground text-sm">
-              CF
-            </span>
-            <span className="font-display font-bold text-foreground">Coach Fema</span>
-          </a>
-        </div>
-      </nav>
+      <SubpageNav />
 
-      <div className="pt-24 pb-16 px-4">
+      <div className="pt-16">
+        <PageHero
+          title="Me"
+          highlight="contacter"
+          subtitle="Discutons de votre projet et transformons votre vision en réalité"
+          image={heroImg}
+        />
+      </div>
+
+      <div className="py-12 px-4">
         <div className="container mx-auto max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-4">
-              Me <span className="text-gradient">contacter</span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Discutons de votre projet et transformons votre vision en réalité
-            </p>
-          </motion.div>
-
           <div className="grid md:grid-cols-5 gap-8">
             {/* Form */}
             <motion.div

@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, ExternalLink } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, ExternalLink, Play, Download } from "lucide-react";
+import SubpageNav from "@/components/SubpageNav";
+import PageHero from "@/components/PageHero";
+import heroImg from "@/assets/hero-projets.jpg";
+import screenshotPixelmedia from "@/assets/screenshot-pixelmedia.png";
+import screenshotTicketafrik from "@/assets/screenshot-ticketafrik.png";
+import screenshotBoosterperso from "@/assets/screenshot-boosterperso.png";
+import screenshotBookflow from "@/assets/screenshot-bookflow.png";
 
 const categories = ["All", "Design", "Logo", "Site web", "Vidéos", "Mockup"] as const;
 type Category = (typeof categories)[number];
@@ -11,8 +17,9 @@ interface Project {
   title: string;
   desc: string;
   category: Category[];
-  image: string;
+  media: string[];
   url?: string;
+  videoUrl?: string;
 }
 
 const projects: Project[] = [
@@ -21,7 +28,7 @@ const projects: Project[] = [
     title: "PixelMedia",
     desc: "Site web moderne pour une agence digitale avec design responsive et animations fluides.",
     category: ["Site web"],
-    image: "/src/assets/screenshot-pixelmedia.png",
+    media: [screenshotPixelmedia],
     url: "https://pixelpub.online/",
   },
   {
@@ -29,7 +36,7 @@ const projects: Project[] = [
     title: "TicketAfrik",
     desc: "Plateforme de billetterie digitale avec interface intuitive et système de QR Code.",
     category: ["Site web"],
-    image: "/src/assets/screenshot-ticketafrik.png",
+    media: [screenshotTicketafrik],
     url: "https://tickeafrik.pixelpub.online/",
   },
   {
@@ -37,7 +44,7 @@ const projects: Project[] = [
     title: "Booster Perso",
     desc: "Plateforme de croissance réseaux sociaux avec dashboard et suivi de performance.",
     category: ["Site web"],
-    image: "/src/assets/screenshot-boosterperso.png",
+    media: [screenshotBoosterperso],
     url: "https://booster.perso.bf/",
   },
   {
@@ -45,7 +52,7 @@ const projects: Project[] = [
     title: "BOOKflow",
     desc: "Solution SaaS de création et vente d'e-books avec système de monétisation intégré.",
     category: ["Site web"],
-    image: "/src/assets/screenshot-bookflow.png",
+    media: [screenshotBookflow],
     url: "https://bookflow.pixelpub.online/",
   },
   {
@@ -53,93 +60,80 @@ const projects: Project[] = [
     title: "Logo Agence Créative",
     desc: "Identité visuelle complète pour une agence créative — logo vectoriel et déclinaisons.",
     category: ["Logo", "Design"],
-    image: "",
+    media: [],
   },
   {
     id: 6,
     title: "Mockup App Mobile",
     desc: "Maquette UI/UX d'une application mobile de livraison avec parcours utilisateur optimisé.",
     category: ["Mockup", "Design"],
-    image: "",
+    media: [],
   },
   {
     id: 7,
     title: "Motion Reel",
     desc: "Vidéo promotionnelle avec motion design et montage dynamique pour les réseaux sociaux.",
     category: ["Vidéos"],
-    image: "",
+    media: [],
+    videoUrl: "#",
   },
   {
     id: 8,
     title: "Branding Restaurant",
     desc: "Création de l'identité visuelle complète : logo, menu, packaging et supports marketing.",
     category: ["Logo", "Design"],
-    image: "",
+    media: [],
   },
 ];
 
+const getCategoryIcon = (cats: Category[]) => {
+  if (cats.includes("Logo")) return "🎨";
+  if (cats.includes("Vidéos")) return "🎬";
+  if (cats.includes("Mockup")) return "📐";
+  return "💻";
+};
+
 const Projets = () => {
-  const navigate = useNavigate();
   const [active, setActive] = useState<Category>("All");
-  const [modalIdx, setModalIdx] = useState<number | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [mediaIdx, setMediaIdx] = useState(0);
   const [zoomed, setZoomed] = useState(false);
 
   const filtered = active === "All" ? projects : projects.filter((p) => p.category.includes(active));
 
-  const openModal = (idx: number) => {
-    setModalIdx(idx);
+  const openModal = (project: Project) => {
+    setSelectedProject(project);
+    setMediaIdx(0);
     setZoomed(false);
   };
 
-  const goNext = () => {
-    if (modalIdx === null) return;
-    setModalIdx((modalIdx + 1) % filtered.length);
+  const nextMedia = () => {
+    if (!selectedProject) return;
+    setMediaIdx((mediaIdx + 1) % selectedProject.media.length);
     setZoomed(false);
   };
 
-  const goPrev = () => {
-    if (modalIdx === null) return;
-    setModalIdx((modalIdx - 1 + filtered.length) % filtered.length);
+  const prevMedia = () => {
+    if (!selectedProject) return;
+    setMediaIdx((mediaIdx - 1 + selectedProject.media.length) % selectedProject.media.length);
     setZoomed(false);
   };
-
-  const currentProject = modalIdx !== null ? filtered[modalIdx] : null;
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft size={20} />
-            <span>Retour</span>
-          </button>
-          <a href="/" className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-display font-bold text-primary-foreground text-sm">
-              CF
-            </span>
-            <span className="font-display font-bold text-foreground">Coach Fema</span>
-          </a>
-        </div>
-      </nav>
+      <SubpageNav />
 
-      <div className="pt-24 pb-16 px-4">
+      <div className="pt-16">
+        <PageHero
+          title="Mes"
+          highlight="Projets"
+          subtitle="Découvrez mes réalisations en développement, design et création digitale"
+          image={heroImg}
+        />
+      </div>
+
+      <div className="py-12 px-4">
         <div className="container mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-4">
-              Mes <span className="text-gradient">Projets</span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Découvrez mes réalisations en développement, design et création digitale
-            </p>
-          </motion.div>
-
           {/* Filters */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {categories.map((cat) => (
@@ -168,19 +162,19 @@ const Projets = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: i * 0.05 }}
-                  onClick={() => openModal(i)}
+                  onClick={() => openModal(project)}
                   className="bg-card border border-border rounded-2xl overflow-hidden cursor-pointer group hover:border-primary/40 transition-colors"
                 >
                   <div className="aspect-video bg-secondary overflow-hidden">
-                    {project.image ? (
+                    {project.media.length > 0 ? (
                       <img
-                        src={project.image}
+                        src={project.media[0]}
                         alt={project.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-muted-foreground text-4xl">
-                        {project.category.includes("Logo") ? "🎨" : project.category.includes("Vidéos") ? "🎬" : "📐"}
+                        {getCategoryIcon(project.category)}
                       </div>
                     )}
                   </div>
@@ -194,6 +188,9 @@ const Projets = () => {
                     </div>
                     <h3 className="text-lg font-bold mb-1">{project.title}</h3>
                     <p className="text-muted-foreground text-sm line-clamp-2">{project.desc}</p>
+                    {project.media.length > 1 && (
+                      <p className="text-xs text-primary mt-2">{project.media.length} médias</p>
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -204,13 +201,13 @@ const Projets = () => {
 
       {/* Modal */}
       <AnimatePresence>
-        {currentProject && (
+        {selectedProject && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-md flex items-center justify-center p-4"
-            onClick={() => setModalIdx(null)}
+            onClick={() => setSelectedProject(null)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -222,18 +219,22 @@ const Projets = () => {
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <div className="flex items-center gap-3">
-                  <button onClick={goPrev} className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors">
-                    <ChevronLeft size={18} />
-                  </button>
-                  <span className="text-sm text-muted-foreground">
-                    {(modalIdx ?? 0) + 1} / {filtered.length}
-                  </span>
-                  <button onClick={goNext} className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors">
-                    <ChevronRight size={18} />
-                  </button>
+                  {selectedProject.media.length > 1 && (
+                    <>
+                      <button onClick={prevMedia} className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors">
+                        <ChevronLeft size={18} />
+                      </button>
+                      <span className="text-sm text-muted-foreground">
+                        {mediaIdx + 1} / {selectedProject.media.length}
+                      </span>
+                      <button onClick={nextMedia} className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors">
+                        <ChevronRight size={18} />
+                      </button>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center gap-2">
-                  {currentProject.image && (
+                  {selectedProject.media.length > 0 && (
                     <button
                       onClick={() => setZoomed(!zoomed)}
                       className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
@@ -242,7 +243,7 @@ const Projets = () => {
                     </button>
                   )}
                   <button
-                    onClick={() => setModalIdx(null)}
+                    onClick={() => setSelectedProject(null)}
                     className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
                   >
                     <X size={18} />
@@ -250,18 +251,18 @@ const Projets = () => {
                 </div>
               </div>
 
-              {/* Image */}
+              {/* Media */}
               <div className={`bg-secondary overflow-auto ${zoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}>
-                {currentProject.image ? (
+                {selectedProject.media.length > 0 ? (
                   <img
-                    src={currentProject.image}
-                    alt={currentProject.title}
+                    src={selectedProject.media[mediaIdx]}
+                    alt={selectedProject.title}
                     onClick={() => setZoomed(!zoomed)}
                     className={`w-full transition-transform duration-300 ${zoomed ? "scale-150" : "scale-100"} object-contain max-h-[60vh]`}
                   />
                 ) : (
                   <div className="w-full h-64 flex items-center justify-center text-muted-foreground text-6xl">
-                    {currentProject.category.includes("Logo") ? "🎨" : currentProject.category.includes("Vidéos") ? "🎬" : "📐"}
+                    {getCategoryIcon(selectedProject.category)}
                   </div>
                 )}
               </div>
@@ -269,24 +270,43 @@ const Projets = () => {
               {/* Info */}
               <div className="p-6">
                 <div className="flex flex-wrap gap-2 mb-3">
-                  {currentProject.category.map((c) => (
+                  {selectedProject.category.map((c) => (
                     <span key={c} className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full">
                       {c}
                     </span>
                   ))}
                 </div>
-                <h2 className="text-2xl font-bold mb-2">{currentProject.title}</h2>
-                <p className="text-muted-foreground leading-relaxed mb-4">{currentProject.desc}</p>
-                {currentProject.url && (
-                  <a
-                    href={currentProject.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-medium hover:opacity-90 transition-opacity"
-                  >
-                    Visiter le projet <ExternalLink size={16} />
-                  </a>
-                )}
+                <h2 className="text-2xl font-bold mb-2">{selectedProject.title}</h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">{selectedProject.desc}</p>
+
+                {/* Type-dependent buttons */}
+                <div className="flex flex-wrap gap-3">
+                  {selectedProject.url && selectedProject.category.includes("Site web") && (
+                    <a
+                      href={selectedProject.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-medium hover:opacity-90 transition-opacity"
+                    >
+                      Visiter le site <ExternalLink size={16} />
+                    </a>
+                  )}
+                  {selectedProject.videoUrl && selectedProject.category.includes("Vidéos") && (
+                    <a
+                      href={selectedProject.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl font-medium hover:opacity-90 transition-opacity"
+                    >
+                      Regarder la vidéo <Play size={16} />
+                    </a>
+                  )}
+                  {(selectedProject.category.includes("Design") || selectedProject.category.includes("Logo") || selectedProject.category.includes("Mockup")) && (
+                    <button className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-6 py-2.5 rounded-xl font-medium hover:bg-secondary/80 transition-colors">
+                      Télécharger le fichier <Download size={16} />
+                    </button>
+                  )}
+                </div>
               </div>
             </motion.div>
           </motion.div>
