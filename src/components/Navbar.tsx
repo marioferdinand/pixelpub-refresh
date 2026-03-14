@@ -65,6 +65,7 @@ const Navbar = () => {
               {link.label}
             </button>
           ))}
+          <ThemeToggle />
           <a
             href="https://wa.me/"
             target="_blank"
