@@ -4,11 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { label: "Accueil", href: "#accueil" },
-  { label: "Expertise", href: "#expertise" },
-  { label: "Projets", href: "#projects" },
+  { label: "Services", href: "#services" },
+  { label: "Projets", href: "/projets" },
   { label: "Résultats", href: "#resultats" },
-  { label: "Store", href: "/store", external: true },
-  { label: "Contact", href: "#contact" },
+  { label: "Store", href: "/store" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const Navbar = () => {
