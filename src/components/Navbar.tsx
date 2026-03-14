@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const navLinks = [
@@ -64,6 +65,7 @@ const Navbar = () => {
               {link.label}
             </button>
           ))}
+          <ThemeToggle />
           <a
             href="https://wa.me/"
             target="_blank"
