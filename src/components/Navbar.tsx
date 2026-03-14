@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const navLinks = [
-  { label: "Accueil", href: "#accueil" },
+  { label: "Accueil", href: "/" },
   { label: "Services", href: "#services" },
   { label: "Projets", href: "/projets" },
   { label: "Résultats", href: "#resultats" },
@@ -14,12 +15,30 @@ const navLinks = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const handleClick = (href: string) => {
+    setMobileOpen(false);
+    if (href.startsWith("#")) {
+      if (location.pathname !== "/") {
+        navigate("/");
+        setTimeout(() => {
+          document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+        }, 300);
+      } else {
+        document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate(href);
+    }
+  };
 
   return (
     <nav
@@ -28,24 +47,22 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
-        <a href="#accueil" className="flex items-center gap-2">
+        <button onClick={() => handleClick("/")} className="flex items-center gap-2">
           <span className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-display font-bold text-primary-foreground text-sm">
             CF
           </span>
           <span className="font-display font-bold text-foreground">Coach Fema</span>
-        </a>
+        </button>
 
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
+            <button
               key={link.href}
-              href={link.href}
-              target={link.external ? "_blank" : undefined}
-              rel={link.external ? "noopener noreferrer" : undefined}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => handleClick(link.href)}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors bg-transparent border-none cursor-pointer"
             >
               {link.label}
-            </a>
+            </button>
           ))}
           <a
             href="https://wa.me/"
@@ -75,16 +92,13 @@ const Navbar = () => {
           >
             <div className="flex flex-col gap-4 p-6">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link.href}
-                  href={link.href}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={() => handleClick(link.href)}
+                  className="text-muted-foreground hover:text-foreground transition-colors text-left bg-transparent border-none cursor-pointer"
                 >
                   {link.label}
-                </a>
+                </button>
               ))}
               <a
                 href="https://wa.me/"
