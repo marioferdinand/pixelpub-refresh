@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import SubpageNav from "@/components/SubpageNav";
 import PageHero from "@/components/PageHero";
 import heroImg from "@/assets/hero-contact.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 const socials = [
   { label: "WhatsApp", href: "https://wa.me/", icon: "💬" },
@@ -18,145 +19,79 @@ const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       toast({ title: "Erreur", description: "Veuillez remplir tous les champs obligatoires.", variant: "destructive" });
       return;
     }
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
-      toast({ title: "Message envoyé !", description: "Je vous répondrai dans les plus brefs délais." });
-      setForm({ name: "", email: "", subject: "", message: "" });
-    }, 1500);
+
+    const { error } = await supabase.from("contact_messages").insert({
+      name: form.name.trim(),
+      email: form.email.trim(),
+      subject: form.subject.trim() || null,
+      message: form.message.trim(),
+    });
+
+    setSending(false);
+    if (error) {
+      toast({ title: "Erreur", description: "Impossible d'envoyer le message.", variant: "destructive" });
+      return;
+    }
+    toast({ title: "Message envoyé !", description: "Je vous répondrai dans les plus brefs délais." });
+    setForm({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
     <div className="min-h-screen bg-background">
       <SubpageNav />
-
       <div className="pt-16">
-        <PageHero
-          title="Me"
-          highlight="contacter"
-          subtitle="Discutons de votre projet et transformons votre vision en réalité"
-          image={heroImg}
-        />
+        <PageHero title="Me" highlight="contacter" subtitle="Discutons de votre projet et transformons votre vision en réalité" image={heroImg} />
       </div>
 
       <div className="py-12 px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="grid md:grid-cols-5 gap-8">
-            {/* Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              className="md:col-span-3"
-            >
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="md:col-span-3">
               <form onSubmit={handleSubmit} className="bg-card border border-border rounded-2xl p-8 space-y-5">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="text-sm font-medium mb-2 block">Nom complet *</label>
-                    <input
-                      type="text"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      maxLength={100}
-                      className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                      placeholder="Votre nom"
-                    />
+                    <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={100} className="w-full bg-background border border-input rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors" placeholder="Votre nom" />
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-2 block">Email *</label>
-                    <input
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      maxLength={255}
-                      className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                      placeholder="votre@email.com"
-                    />
+                    <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-background border border-input rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors" placeholder="votre@email.com" />
                   </div>
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Sujet</label>
-                  <input
-                    type="text"
-                    value={form.subject}
-                    onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                    maxLength={200}
-                    className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                    placeholder="Sujet de votre message"
-                  />
+                  <input type="text" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} maxLength={200} className="w-full bg-background border border-input rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors" placeholder="Le sujet de votre message" />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">Message *</label>
-                  <textarea
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    maxLength={2000}
-                    rows={5}
-                    className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
-                    placeholder="Décrivez votre projet..."
-                  />
+                  <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={5} className="w-full bg-background border border-input rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors resize-none" placeholder="Décrivez votre projet..." />
                 </div>
-                <button
-                  type="submit"
-                  disabled={sending}
-                  className="w-full bg-primary text-primary-foreground px-6 py-3.5 rounded-xl font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-60"
-                >
-                  {sending ? "Envoi en cours..." : <>Envoyer <Send size={18} /></>}
+                <button type="submit" disabled={sending} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-60">
+                  {sending ? "Envoi en cours..." : <><Send size={18} /> Envoyer le message</>}
                 </button>
               </form>
             </motion.div>
 
-            {/* Sidebar */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="md:col-span-2 space-y-6"
-            >
-              <div className="bg-card border border-border rounded-2xl p-8">
-                <h3 className="text-lg font-bold mb-5">Informations</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Mail size={18} className="text-primary mt-0.5" />
-                    <div>
-                      <p className="text-sm font-medium">Email</p>
-                      <p className="text-sm text-muted-foreground">contact@coachfema.com</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Phone size={18} className="text-primary mt-0.5" />
-                    <div>
-                      <p className="text-sm font-medium">Téléphone</p>
-                      <p className="text-sm text-muted-foreground">+226 32 76 052 46</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <MapPin size={18} className="text-primary mt-0.5" />
-                    <div>
-                      <p className="text-sm font-medium">Localisation</p>
-                      <p className="text-sm text-muted-foreground">Madagascar, Diego-Suarez, 201</p>
-                    </div>
-                  </div>
-                </div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="md:col-span-2 space-y-6">
+              <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
+                <h3 className="font-bold text-lg">Informations</h3>
+                <div className="flex items-start gap-3 text-sm"><Mail size={18} className="text-primary mt-0.5" /><div><p className="font-medium">Email</p><p className="text-muted-foreground">contact@coachfema.com</p></div></div>
+                <div className="flex items-start gap-3 text-sm"><Phone size={18} className="text-primary mt-0.5" /><div><p className="font-medium">Téléphone</p><p className="text-muted-foreground">+226 00 00 00 00</p></div></div>
+                <div className="flex items-start gap-3 text-sm"><MapPin size={18} className="text-primary mt-0.5" /><div><p className="font-medium">Localisation</p><p className="text-muted-foreground">Ouagadougou, Burkina Faso</p></div></div>
               </div>
 
-              <div className="bg-card border border-border rounded-2xl p-8">
-                <h3 className="text-lg font-bold mb-5">Réseaux sociaux</h3>
+              <div className="bg-card border border-border rounded-2xl p-6">
+                <h3 className="font-bold text-lg mb-4">Réseaux sociaux</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {socials.map((s) => (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 bg-secondary rounded-xl px-4 py-3 text-sm font-medium hover:bg-secondary/80 transition-colors"
-                    >
+                    <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-secondary px-4 py-3 rounded-xl text-sm hover:bg-secondary/80 transition-colors">
                       <span>{s.icon}</span> {s.label}
                     </a>
                   ))}
