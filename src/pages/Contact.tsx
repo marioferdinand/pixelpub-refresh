@@ -133,14 +133,14 @@ const Contact = () => {
                     <Phone size={18} className="text-primary mt-0.5" />
                     <div>
                       <p className="text-sm font-medium">Téléphone</p>
-                      <p className="text-sm text-muted-foreground">+226 XX XX XX XX</p>
+                      <p className="text-sm text-muted-foreground">+226 32 76 052 46</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin size={18} className="text-primary mt-0.5" />
                     <div>
                       <p className="text-sm font-medium">Localisation</p>
-                      <p className="text-sm text-muted-foreground">Burkina Faso</p>
+                      <p className="text-sm text-muted-foreground">Madagascar, Diego-Suarez, 201</p>
                     </div>
                   </div>
                 </div>

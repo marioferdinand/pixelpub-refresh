@@ -6,11 +6,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const navLinks = [
   { label: "Accueil", href: "/" },
-  { label: "Services", href: "#services" },
+  { label: "Services", href: "/services" },
   { label: "Projets", href: "/projets" },
-  { label: "Résultats", href: "#resultats" },
   { label: "Store", href: "/store" },
-  { label: "Contact", href: "/contact" },
+  { label: "Blogs", href: "/blogs" },
+  { label: "Avis", href: "/avis" },
 ];
 
 const Navbar = () => {
@@ -27,18 +27,15 @@ const Navbar = () => {
 
   const handleClick = (href: string) => {
     setMobileOpen(false);
-    if (href.startsWith("#")) {
-      if (location.pathname !== "/") {
-        navigate("/");
-        setTimeout(() => {
-          document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-        }, 300);
-      } else {
-        document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      navigate(href);
+    navigate(href);
+  };
+
+  const isActiveLink = (href: string) => {
+    if (href === "/") {
+      return location.pathname === "/";
     }
+
+    return location.pathname === href;
   };
 
   return (
@@ -49,7 +46,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <button onClick={() => handleClick("/")} className="flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-display font-bold text-primary-foreground text-sm">
+          <span className="w-8 h-8 rounded-full bg-primary flex items-center justify-center font-display font-bold text-primary-foreground text-sm">
             CF
           </span>
           <span className="font-display font-bold text-foreground">Coach Fema</span>
@@ -60,15 +57,18 @@ const Navbar = () => {
             <button
               key={link.href}
               onClick={() => handleClick(link.href)}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors bg-transparent border-none cursor-pointer"
+              className={`bg-transparent border-none cursor-pointer text-sm transition-colors ${
+                isActiveLink(link.href)
+                  ? "font-bold text-foreground underline underline-offset-8 decoration-2"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               {link.label}
             </button>
           ))}
           <ThemeToggle />
           <a
-            href="https://wa.me/"
-            target="_blank"
+            href="/contact"
             rel="noopener noreferrer"
             className="bg-primary text-primary-foreground px-5 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
           >
@@ -97,14 +97,18 @@ const Navbar = () => {
                 <button
                   key={link.href}
                   onClick={() => handleClick(link.href)}
-                  className="text-muted-foreground hover:text-foreground transition-colors text-left bg-transparent border-none cursor-pointer"
+                  className={`bg-transparent border-none cursor-pointer text-left transition-colors ${
+                    isActiveLink(link.href)
+                      ? "font-bold text-foreground underline underline-offset-4 decoration-2"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   {link.label}
                 </button>
               ))}
+             
               <a
-                href="https://wa.me/"
-                target="_blank"
+                href="/contact"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
                 className="bg-primary text-primary-foreground px-5 py-2 rounded-lg text-sm font-medium text-center"
