@@ -8,7 +8,7 @@ import PageHero from "@/components/PageHero";
 import heroImg from "@/assets/hero-contact.jpg";
 import { supabase } from "@/integrations/supabase/client";
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const iconMap: Record<string, typeof Code> = {
   Code, Users, Palette, Cog,
 };
 
